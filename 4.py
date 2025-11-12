@@ -15,6 +15,10 @@ warnings.filterwarnings('ignore')
 
 print("TensorFlow version:", tf.__version__)
 
+
+
+
+
 # Load the credit card dataset
 df = pd.read_csv('/content/creditcard.csv')
 
@@ -29,6 +33,9 @@ print(df['Class'].value_counts())
 print("\nPercentage of Fraudulent Transactions:",
       round(df['Class'].value_counts()[1] / len(df) * 100, 2), '%')
      
+
+
+
 
 # Normalize the Time and Amount columns using StandardScaler
 scaler = StandardScaler()
@@ -51,6 +58,10 @@ df.insert(1, 'scaled_time', scaled_time)
 print("Dataset after scaling:")
 print(df.head())
 
+
+
+
+
 # Separate normal and fraudulent transactions
 normal_df = df[df['Class'] == 0]
 fraud_df = df[df['Class'] == 1]
@@ -63,6 +74,10 @@ X_train = normal_df.drop(['Class'], axis=1).values
 y_train = normal_df['Class'].values
 
 print("\nTraining Data Shape:", X_train.shape)
+
+
+
+
 
 # Split the entire dataset into train and test
 X = df.drop(['Class'], axis=1).values
@@ -84,6 +99,9 @@ print("Test Normal:", X_test_normal.shape)
 print("Test Fraud:", X_test_fraud.shape)
 
 
+
+
+
 # Define the input dimension
 input_dim = X_train.shape[1]
 
@@ -100,6 +118,8 @@ batch_size = 32
 print(f"Input Dimension: {input_dim}")
 print(f"Encoding Dimensions: {encoding_dim_1}, {encoding_dim_2}, {encoding_dim_3}")
      
+
+
 
 
 # Encoder
@@ -130,6 +150,9 @@ print("Autoencoder Architecture:")
 autoencoder.summary()
 
 
+
+
+
 # Train the autoencoder on normal transactions only
 history = autoencoder.fit(
     X_train, X_train,
@@ -141,6 +164,9 @@ history = autoencoder.fit(
 )
 
 print("\nTraining completed!")
+
+
+
 
 
 # Plot training and validation loss
@@ -171,6 +197,8 @@ plt.show()
 
 
 
+
+
 # Predict on test data
 reconstructions = autoencoder.predict(X_test)
 
@@ -183,6 +211,8 @@ print(f"Std: {mse.std():.6f}")
 print(f"Min: {mse.min():.6f}")
 print(f"Max: {mse.max():.6f}")
      
+
+
 
 
 # Separate reconstruction errors for normal and fraud transactions
@@ -217,7 +247,9 @@ plt.show()
 
 print(f"Normal Transaction Error - Mean: {error_normal.mean():.6f}, Std: {error_normal.std():.6f}")
 print(f"Fraud Transaction Error - Mean: {error_fraud.mean():.6f}, Std: {error_fraud.std():.6f}")
-     
+
+
+
 
 
 # Calculate threshold based on normal transaction errors
@@ -235,6 +267,8 @@ print(f"\nUsing threshold: {threshold:.6f}")
 
 
 
+
+
 # Predict anomalies: if reconstruction error > threshold, it's an anomaly
 predictions = (mse > threshold).astype(int)
 
@@ -242,6 +276,9 @@ predictions = (mse > threshold).astype(int)
 print("Predictions Distribution:")
 print(f"Normal (0): {np.sum(predictions == 0)}")
 print(f"Anomaly (1): {np.sum(predictions == 1)}")
+
+
+
 
 
 # Calculate performance metrics
@@ -258,6 +295,8 @@ print(f"Precision: {precision:.4f} ({precision*100:.2f}%)")
 print(f"Recall:    {recall:.4f} ({recall*100:.2f}%)")
 print(f"F1-Score:  {f1:.4f}")
 print("=" * 50)
+
+
 
 
 
@@ -284,6 +323,8 @@ print(f"True Positives (TP):  {tp}")
 
 
 
+
+
 # Visualize reconstruction errors with threshold
 plt.figure(figsize=(14, 6))
 
@@ -299,6 +340,9 @@ plt.legend()
 plt.colorbar(label='Class (0=Normal, 1=Fraud)')
 plt.grid(True, alpha=0.3)
 plt.show()
+
+
+
 
 
 # Show some sample predictions

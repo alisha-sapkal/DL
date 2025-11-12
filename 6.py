@@ -58,6 +58,8 @@ else:
 
 
 
+
+
 import numpy as np
 import shutil
 
@@ -111,6 +113,9 @@ print("Dataset successfully split into train, validation, and test sets.")
 print(f"Total classes: {len(class_names)}")
 
 
+
+
+
 from torchvision import transforms
 
 image_transforms = {
@@ -136,6 +141,8 @@ image_transforms = {
         transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
 }
+
+
 
 
 
@@ -165,6 +172,8 @@ print(f"Test samples: {len(data['test'])}")
 
 
 
+
+
 from torchvision import models
 
 model = models.vgg16(pretrained=True)
@@ -173,8 +182,11 @@ print(model)
 
 
 
+
+
 for param in model.parameters():
     param.requires_grad = False
+
 
 
 
@@ -203,10 +215,12 @@ print(model.classifier[6])
 
 
 
+
 import torch.optim as optim
 
 criterion = nn.NLLLoss()
 optimizer = optim.Adam(model.parameters())
+
 
 
 
@@ -345,6 +359,8 @@ else:
 
     # Display the plots
     plt.show()
+
+
 
 
 

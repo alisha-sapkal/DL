@@ -7,7 +7,6 @@ import random
 #Load training and testing dataset
 mnist = tf.keras.datasets.mnist #import mnist dataset
 (x_train, y_train), (x_test, y_test) = mnist.load_data() #spliting
-
 x_train = x_train / 255 #data was in range 0-255, we wanted in 0-1
 x_test = x_test / 255
 
@@ -17,7 +16,6 @@ model = keras.Sequential([
     keras.layers.Dense(128, activation="relu"),
     keras.layers.Dense(10, activation="softmax")
 ])
-
 model.summary()
 
 
@@ -25,7 +23,6 @@ model.summary()
 model.compile(optimizer="sgd",
               loss = "sparse_categorical_crossentropy",
               metrics=['accuracy'])
-
 history=model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=10)
 
 

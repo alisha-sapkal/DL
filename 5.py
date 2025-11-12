@@ -15,21 +15,36 @@ then accurately extract information and insights contained in the documents as w
 organize the documents themselves."""
 
 
+
+
+
 # Tokenize words from the paragraph
 tokenized_words = [gensim.utils.simple_preprocess(sentence) for sentence in text.split('\n')]
 
 # Gensim's tokenizer for the entire text
 tokenizer = Tokenizer()
 
+
+
+
+
 tokenizer.fit_on_texts(tokenized_words)
 word_index = tokenizer.word_index
 index_word = {v: k for k, v in word_index.items()}
+
+
+
+
 
 total_vocab = len(word_index) + 1
 total_sentences = len(tokenized_words)
 
 print(f"Total number of unique words: {total_vocab}")
 print(f"Total number of sentences: {total_sentences}")
+
+
+
+
 
 window_size = 2
 X = []
@@ -56,6 +71,9 @@ X_padded = pad_sequences(X_indexed, maxlen=window_size*2)
 y_categorical = to_categorical(y_indexed, num_classes=total_vocab)
 
 
+
+
+
 embedding_dim = 100
 
 model = Sequential([
@@ -66,6 +84,14 @@ model = Sequential([
 
 model.compile(loss='categorical_crossentropy', optimizer='adam')
 model.summary()
+
+
+
+
+model.fit(X_padded, y_categorical, epochs=100, verbose=1)
+
+
+
 
 
 vect_file_path = 'vectors.txt'
@@ -83,6 +109,15 @@ with open(vect_file_path, 'w') as vect_file:
     for word, i in word_index.items():
         final_vec = ' '.join(map(str, list(weights[i, :])))
         vect_file.write(f'{word} {final_vec}\n')
+
+
+
+
+
+cbow_output = gensim.models.KeyedVectors.load_word2vec_format(vect_file_path, binary=False)
+
+
+
 
 
 # Choose a word from your vocabulary to get similar words
